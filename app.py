@@ -12,13 +12,22 @@ def index():
 @app.route('/describe', methods=['POST'])
 def describe():
     encoded_string = request.json['image']
+    prompt = request.json['prompt']
+    option = request.json['option']
     image_data = [{"data": encoded_string, "id": 12}]
+    # Describe the image briefly and accurately. If the picture contains a TV, answer yes or no
     data = {
-        "prompt": "USER:[img-12]Describe the image briefly and accurately.\nASSISTANT:", 
+        "prompt": "USER:[img-12]{}\nASSISTANT:".format(prompt), 
         "n_predict": 128, 
         "image_data": image_data, 
         "stream": True
     }
+    # data = {
+    #     "prompt": "USER:[img-12]详细描述一下图片的内容，用中文回答。\nASSISTANT:", 
+    #     "n_predict": 256, 
+    #     "image_data": image_data, 
+    #     "stream": True
+    # }
     headers = {"Content-Type": "application/json"}
     url = "http://localhost:8080/completion"
     

@@ -26,7 +26,14 @@ body {
     justify-content: flex-end;
 }
 
-#description {
+#actionImg {
+  position: fixed;
+  width: 100px;
+  padding: 20px;
+}
+
+#description,
+#promptText {
     color: rgba(255, 255, 255, 0.8);
     font-weight: bold;
     background-color: rgba(0, 0, 0, 0.5);
@@ -34,6 +41,11 @@ body {
     padding: 8px;
     margin-bottom: 10px;
     font-family: sans-serif;
+}
+
+#promptText {
+  color: rgba(255, 255, 0, 0.8);
+  visibility: hidden
 }
 
 #controls {

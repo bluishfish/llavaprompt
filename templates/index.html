@@ -10,15 +10,41 @@
 
 <body>
   <video id="videoElement" autoplay playsinline></video>
+  <img src="" id="actionImg">
   <div id="overlay">
+    <div id="promptText"></div>
     <div id="description"></div>
     <div id="controls">
       <button id="switchCamera">Switch Camera</button>
       <button id="describe">Describe</button>
       <button id="narrate">Narrate</button>
-      <button id="clear">Clear</button>
+      <button id="btnPrompt">Prompt</button>
     </div>
   </div>
+
+  <dialog class="promptDialog" id="promptDialog">
+    <div>Prompt: </div>
+    <br>
+    <!-- 对话框内容 -->
+    <div class="dialogContent">
+        <div class="form">
+            <form method="dialog">
+              <input type="text" id="prompt" value="" maxlength="100"><br><br>
+              <input type="radio" id="radioDescribe" name="option" value="describe" checked>
+              <label for="radio_describe">describe</label><br>
+              <input type="radio" id="radioAction" name="option" value="action">
+              <label for="radio_action">action</label><br>
+              <br>
+              <input type="checkbox" id="showPrompt" value="showPrompt" checked>Show Prompt<br>
+              <input type="checkbox" id="autoRun" value="autoRun" checked>Autorun<br>
+              <br>
+              <button type="submit" value="submit">Submit</button>
+              <button type="submit" value="cancel">Cancel</button>
+            </form>
+        </div>
+    </div>
+    <!-- 对话框内容 end -->
+</dialog>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

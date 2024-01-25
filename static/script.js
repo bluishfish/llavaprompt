@@ -1,6 +1,57 @@
 let video = document.getElementById('videoElement');
+let promptDialog = document.getElementById('promptDialog');
+let promptText = document.getElementById('promptText');
 let facingMode = "user";
 let stream = null;
+let prompt = "";
+let option = "describe"
+let dataURL = null;
+let timer = null;
+
+promptDialog.addEventListener("close",function(e){
+  console.info("close");
+  let rV = promptDialog.returnValue;
+  console.info( rV );
+  if(rV =="submit"){
+    option = document.querySelector('input[name="option"]:checked').value;
+    prompt = document.getElementById('prompt').value;
+
+    if(document.getElementById('showPrompt').checked){
+      promptText.style.visibility = 'visible'
+    }else{
+      promptText.style.visibility = 'hidden'
+    }
+
+    if(option == "describe"){
+      if(prompt == ""){
+        prompt = "Describe the image briefly and accurately."
+      }
+      
+    }else if (option == "action"){
+      if(prompt == ""){
+        prompt = "If the picture contains a person"
+      }
+      prompt += ", answer yes or no"
+    }
+    document.getElementById('promptText').textContent = option +": "+ prompt
+
+
+    if(document.getElementById('autoRun').checked){
+      timer && clearInterval(timer) 
+      timer=setInterval(function() {
+        describe();
+      },5000); 
+    }else{
+      timer && clearInterval(timer) 
+    }
+
+    describe();
+
+  }else if(rV =="cancel"){
+    console.info("cancel");
+  }
+  promptDialog.returnValue = ""; // 清空该值，否则会一直保留到对话框上。
+});
 
 function startVideo() {
   if (stream) {
@@ -22,11 +73,24 @@ function startVideo() {
     .catch(function (err) { console.log(err.name + ": " + err.message); });
 }
 
-document.getElementById('clear').addEventListener('click', function () {
+document.getElementById('btnPrompt').addEventListener('click', function () {
   document.getElementById('description').textContent = '';
+  document.getElementById('actionImg').src = "";
+  promptDialog.showModal();
 });
 
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    // if (document.exitFullscreen) {
+    //   document.exitFullscreen();
+    // }
+  }
+}
+
 document.getElementById('switchCamera').addEventListener('click', function () {
+  toggleFullScreen();
   facingMode = facingMode === "user" ? "environment" : "user";
   startVideo();
 });
@@ -40,8 +104,7 @@ document.getElementById('narrate').addEventListener('click', function () {
   narrateDescription(document.getElementById('description').textContent);
 });
 
-
-document.getElementById('describe').addEventListener('click', function () {
+function describe () {
   let canvas = document.createElement('canvas');
   canvas.width = video.clientWidth;
   canvas.height = video.clientHeight;
@@ -79,7 +142,7 @@ document.getElementById('describe').addEventListener('click', function () {
 
   drawVideoToCanvas();
 
-  let dataURL = canvas.toDataURL('image/png');
+  dataURL = canvas.toDataURL('image/png');
   let base64ImageContent = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
   const descriptionDiv = document.getElementById('description');
 
@@ -90,7 +153,11 @@ document.getElementById('describe').addEventListener('click', function () {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ image: base64ImageContent })
+    body: JSON.stringify({ 
+      image: base64ImageContent,
+      prompt: prompt,
+      option: option
+     })
   })
     .then(response => {
       descriptionDiv.textContent = '';
@@ -104,6 +171,17 @@ document.getElementById('describe').addEventListener('click', function () {
           if (buffer.length) {
             descriptionDiv.textContent += buffer + ' ';
           }
+          
+          if (option == "action"){
+            if(descriptionDiv.textContent.replace(/\s+/g,"").toLowerCase()=="yes"){
+              console.log("yes")
+              document.getElementById('actionImg').src = dataURL
+            }else{
+              console.log("no")
+              document.getElementById('actionImg').src = ""
+            }
+          }
+          
           return;
         }
         const text = buffer + decoder.decode(value, { stream: true });
@@ -114,6 +192,10 @@ document.getElementById('describe').addEventListener('click', function () {
       });
     })
     .catch(err => console.error(err));
-});
+}
+
+
+document.getElementById('describe').addEventListener('click', describe);
+
 
 startVideo();
