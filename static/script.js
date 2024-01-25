@@ -7,6 +7,7 @@ let prompt = "";
 let option = "describe"
 let dataURL = null;
 let timer = null;
+const INTERVAL = 15000;
 
 promptDialog.addEventListener("close",function(e){
   console.info("close");
@@ -40,7 +41,7 @@ promptDialog.addEventListener("close",function(e){
       timer && clearInterval(timer) 
       timer=setInterval(function() {
         describe();
-      },15000); 
+      },INTERVAL); 
     }else{
       timer && clearInterval(timer) 
     }
@@ -145,6 +146,10 @@ function describe () {
   dataURL = canvas.toDataURL('image/png');
   let base64ImageContent = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
   const descriptionDiv = document.getElementById('description');
+
+  if (option == "describe"){
+      document.getElementById('actionImg').src = dataURL
+  }
 
   descriptionDiv.textContent = 'Loading...';
 

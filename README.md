@@ -1,14 +1,13 @@
 # LLaVaPrompt
 
 ![Screenshot](screenshot.gif)
-
-A simple "Be My Eyes" web app with a llama.cpp/llava backend created in about an hour using ChatGPT, Copilot, and some minor help from me, [@lxe](https://twitter.com/lxe). It describes what it sees using [SkunkworksAI BakLLaVA-1](https://huggingface.co/SkunkworksAI/BakLLaVA-1) model via [llama.cpp](https://github.com/ggerganov/llama.cpp) and narrates the text using [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API).
-
-Inspired by [Fuzzy-Search/realtime-bakllava](https://github.com/Fuzzy-Search/realtime-bakllava).
+![Screenshot01](screenshot01.jpg)
+![Screenshot02](screenshot02.jpg)
+![Screenshot03](screenshot03.jpg)
 
 ## Getting Started
 
-You will need a machine with about ~5 GB of RAM/VRAM for the q4_k version.
+You will need a machine with about ~9 GB of RAM/VRAM for the q4_k version.
 
 ### Set up the llama.cpp server
 
@@ -29,11 +28,11 @@ cmake .. -DLLAMA_CUBLAS=ON # Remove the flag if CUDA is unavailable
 cmake --build . --config Release
 ```
 
-Download the models from [ggml_bakllava-1](https://huggingface.co/mys/ggml_bakllava-1/tree/main):
+Download the models from [ggml_llava-v1.5-13b](https://huggingface.co/mys/ggml_llava-v1.5-13b/tree/main):
 
 ```shell
-wget https://huggingface.co/mys/ggml_bakllava-1/resolve/main/mmproj-model-f16.gguf
-wget https://huggingface.co/mys/ggml_bakllava-1/resolve/main/ggml-model-q4_k.gguf # Choose another quant if preferred
+wget https://huggingface.co/mys/ggml_llava-v1.5-13b/resolve/main/mmproj-model-f16.gguf
+wget https://huggingface.co/mys/ggml_llava-v1.5-13b/resolve/main/ggml-model-q4_k.gguf # Choose another quant if preferred
 ```
 
 Start the server (server options detailed [here](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md)):
@@ -69,7 +68,7 @@ npx localtunnel --local-https --allow-invalid-cert --port 5000
 ```
 
 ## Acknowledgements and Inspiration
-
+- [lxe/llavavision](https://github.com/lxe/llavavision)
 - [Fuzzy-Search/realtime-bakllava](https://github.com/Fuzzy-Search/realtime-bakllava)
 - [Multimodal LLama.cpp](https://github.com/ggerganov/llama.cpp/issues/3332)
 - [llava-vl.github.io](https://llava-vl.github.io/)
