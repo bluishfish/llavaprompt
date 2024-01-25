@@ -1,4 +1,4 @@
-# LLaVaVision
+# LLaVaPrompt
 
 ![Screenshot](screenshot.gif)
 
@@ -43,13 +43,13 @@ Start the server (server options detailed [here](https://github.com/ggerganov/ll
 # ./bin/server -m ggml-model-q4_k.gguf --mmproj mmproj-model-f16.gguf # For CPU
 ```
 
-### Launch LLaVaVision
+### Launch LLaVaPrompt
 
 Clone and set up the environment:
 
 ```shell
-git clone https://github.com/lxe/llavavision
-cd llavavision
+git clone https://github.com/bluishfish/llavaprompt.git
+cd llavaprompt
 python3 -m venv venv
 . ./venv/bin/activate
 pip install -r requirements.txt

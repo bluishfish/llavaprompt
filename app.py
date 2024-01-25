@@ -18,7 +18,7 @@ def describe():
     # Describe the image briefly and accurately. If the picture contains a TV, answer yes or no
     data = {
         "prompt": "USER:[img-12]{}\nASSISTANT:".format(prompt), 
-        "n_predict": 128, 
+        "n_predict": 256, 
         "image_data": image_data, 
         "stream": True
     }

@@ -40,7 +40,7 @@ promptDialog.addEventListener("close",function(e){
       timer && clearInterval(timer) 
       timer=setInterval(function() {
         describe();
-      },5000); 
+      },15000); 
     }else{
       timer && clearInterval(timer) 
     }
@@ -185,9 +185,9 @@ function describe () {
           return;
         }
         const text = buffer + decoder.decode(value, { stream: true });
-        const words = text.split(' ');
+        const words = text.split('');
         buffer = words.pop();
-        words.forEach(word => descriptionDiv.textContent += word + ' ');
+        words.forEach(word => descriptionDiv.textContent += word + '');
         reader.read().then(processText);
       });
     })
